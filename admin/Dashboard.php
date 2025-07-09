@@ -1,11 +1,30 @@
-<?php
+<?php global $pdo;
 session_start();
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     header('Location: ../views/public/accueil.php');
     exit;
 }
-?>
 
+?>
+<?php
+global $pdo;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../config/db.php';
+
+$stmt = $pdo->query("SELECT COUNT(*) FROM copies");
+$totalCopies = $stmt->fetchColumn();
+$stmt->closeCursor();
+$stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'correcteur'");
+$totalCorrecteurs = $stmt->fetchColumn();
+$stmt->closeCursor();
+$stmt = $pdo->query("SELECT COUNT(*) FROM copies WHERE statut='corrigee'");
+$totalCopiesCorrigees = $stmt->fetchColumn();
+
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -89,9 +108,6 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                 <strong>Connexion établie :</strong> Données synchronisées avec le système.
             </div>
 
-            <div id="noDataAlert" class="alert alert-warning" style="display: none;">
-                <strong>Aucune donnée trouvée :</strong> Veuillez d'abord accéder aux pages étudiants et correcteurs pour initialiser les données.
-            </div>
 
             <!-- Stats Cards -->
             <div class="stats-section">
@@ -99,7 +115,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                     <div class="stat-card copies">
                         <div class="stat-icon">📄</div>
                         <div class="stat-content">
-                            <div class="stat-number" id="totalCopies">0</div>
+                            <div class="stat-number" id="totalCopies"><?= $totalCopies?></div>
                             <div class="stat-label">Copies Totales</div>
                         </div>
                     </div>
@@ -107,7 +123,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                     <div class="stat-card correctors">
                         <div class="stat-icon">👨‍🏫</div>
                         <div class="stat-content">
-                            <div class="stat-number" id="totalCorrectors">0</div>
+                            <div class="stat-number" id="totalCorrectors"><?= $totalCorrecteurs?></div>
                             <div class="stat-label">Correcteurs Actifs</div>
                         </div>
                     </div>
@@ -115,7 +131,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                     <div class="stat-card corrected">
                         <div class="stat-icon">✅</div>
                         <div class="stat-content">
-                            <div class="stat-number" id="correctedCopies">0</div>
+                            <div class="stat-number" id="correctedCopies"><?= $totalCopiesCorrigees?></div>
                             <div class="stat-label">Copies Corrigées</div>
                         </div>
                     </div>
@@ -148,11 +164,47 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                                 </tr>
                                 </thead>
                                 <tbody id="copiesTable">
-                                <tr>
-                                    <td colspan="6" class="no-data">
-                                        Aucune copie trouvée. Chargement des données...
-                                    </td>
-                                </tr>
+                                <?php
+                                global $pdo;
+                                if (session_status() === PHP_SESSION_NONE) {
+                                    session_start();
+                                }
+
+                                require_once __DIR__ . '/../config/db.php';
+
+                                $stmt = $pdo->query("
+                            SELECT 
+                                c.id,
+                                c.id_candidat,
+                                c.corrected_by,
+                                c.statut,
+                                g.note,
+                                c.date_depot
+                            FROM copies c
+                            left JOIN grille_evaluation g ON g.id_copie = c.id
+                            
+                            ORDER BY c.date_depot DESC
+                        ");
+                                $copies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                $stmt->closeCursor();
+
+
+
+
+
+                                foreach ($copies as $copie):
+                                    ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($copie['id']) ?></td>
+                                        <td><?= htmlspecialchars($copie['id_candidat']) ?></td>
+                                        <td><?php if (isset($copie['corrected_by'])){echo htmlspecialchars($copie['corrected_by']);} else{echo "-";} ?></td>
+                                        <td><?= htmlspecialchars($copie['statut']) ?></td>
+                                        <td><?= isset($copie['note']) ? ucfirst(str_replace('_', ' ', $copie['note'])) : '-' ?></td>
+
+                                        <td><?= date('d/m/Y H:i', strtotime($copie['date_depot'])) ?></td>
+
+                                    </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -176,22 +228,109 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
                                     <th>Nom</th>
                                     <th>Prenom</th>
                                     <th>Email</th>
-                                    <th>Total_copie</th>
+                                    <th>Copies_corrigées</th>
                                     <th>Date inscription</th>
                                 </tr>
                                 </thead>
                                 <tbody id="correctorsTable">
-                                <tr>
-                                    <td colspan="6" class="no-data">
-                                        Aucun correcteur trouvé. Chargement des données...
-                                    </td>
-                                </tr>
+                                <?php
+                                global $pdo;
+                                if (session_status() === PHP_SESSION_NONE) {
+                                    session_start();
+                                }
+
+                                require_once __DIR__ . '/../config/db.php';
+
+
+
+                                                                $stmt = $pdo->query("
+                                    SELECT  u.id, u.nom, u.prenom, u.email, u.date_creation, COUNT(c.id) AS total_copies  FROM users u   LEFT JOIN copies c ON u.id = c.corrected_by  WHERE u.role = 'correcteur' GROUP BY u.id       ORDER BY u.date_creation DESC ");
+
+                                $users = $stmt->fetchAll();
+
+
+                                foreach ($users as $user):
+                                    ?>
+
+
+
+                                    <tr>
+                                       <td><?= htmlspecialchars($user['id']) ?></td>
+                                        <td><?= htmlspecialchars($user['nom']) ?></td>
+                                        <td><?= htmlspecialchars($user['prenom']) ?></td>
+                                        <td><?= htmlspecialchars($user['email']) ?></td>
+                                        <td><?= htmlspecialchars($user['total_copies']) ?></td>
+
+
+                                        <td><?= htmlspecialchars($user['date_creation']) ?></td>
+
+                                    </tr>
+                                <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Candidat Management -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">👨‍Candidat</h2>
+
+                </div>
+                <div class="section-content">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Email</th>
+                                <th>Total_copie</th>
+                                <th>Date inscription</th>
+                            </tr>
+                            </thead>
+                            <tbody id="correctorsTable">
+                            <?php
+                            global $pdo;
+                            if (session_status() === PHP_SESSION_NONE) {
+                                session_start();
+                            }
+
+                            require_once __DIR__ . '/../config/db.php';
+
+
+
+                            $stmt = $pdo->query("
+                                    SELECT  u.id, u.nom, u.prenom, u.email, u.date_creation, COUNT(c.id) AS total_copies  FROM users u   LEFT JOIN copies c ON u.id = c.id_candidat  WHERE u.role = 'candidat' GROUP BY u.id       ORDER BY u.date_creation DESC ");
+
+                            $users = $stmt->fetchAll();
+
+
+                            foreach ($users as $user):
+                                ?>
+
+
+
+                                <tr>
+                                    <td><?= htmlspecialchars($user['id']) ?></td>
+                                    <td><?= htmlspecialchars($user['nom']) ?></td>
+                                    <td><?= htmlspecialchars($user['prenom']) ?></td>
+                                    <td><?= htmlspecialchars($user['email']) ?></td>
+                                    <td><?= htmlspecialchars($user['total_copies']) ?></td>
+
+
+                                    <td><?= htmlspecialchars($user['date_creation']) ?></td>
+
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
             <!-- Results Section -->
             <div class="section results-section">
