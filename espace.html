@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espaces Candidat et Correcteur - Guide Fonctionnel</title>
+    <style>
+        @page {
+            margin: 2cm;
+            size: A4;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        .header h1 {
+            color: #1e40af;
+            font-size: 28px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            break-inside: avoid;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-radius: 12px;
+            border-left: 5px solid #059669;
+        }
+
+        .section-title .emoji {
+            margin-right: 10px;
+            font-size: 26px;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #4b5563;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .feature {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .feature-title {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .feature-title .emoji {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .feature ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .feature li {
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        .feature ul ul {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .feature ul ul li {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .table-container {
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #4b5563;
+        }
+
+        .status-corrected {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .status-locked {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .action-button {
+            background: #3b82f6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .action-view {
+            background: #059669;
+        }
+
+        .action-download {
+            background: #7c3aed;
+        }
+
+        .form-example {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .form-example strong {
+            color: #1e40af;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .section {
+                break-inside: avoid;
+            }
+
+            .feature {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Guide Fonctionnel<br>Espaces Candidat et Correcteur</h1>
+</div>
+
+<div class="section">
+    <div class="section-title">
+        <span class="emoji">✅</span>
+        <span>Espace Candidat</span>
+    </div>
+
+    <div class="description">
+        L'espace candidat est centré sur <strong>le dépôt, le suivi et la consultation des résultats</strong>.
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">🔐</span>
+            <span>Tableau de bord</span>
+        </div>
+        <ul>
+            <li>Message de bienvenue</li>
+            <li>Résumé de l'état des copies déposées</li>
+            <li>Rappel sur la confidentialité</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📥</span>
+            <span>Dépôt de copie</span>
+        </div>
+        <ul>
+            <li>Formulaire d'upload (PDF ou ZIP)</li>
+            <li>Instructions :
+                <ul>
+                    <li>Le fichier doit être anonymisé</li>
+                    <li>Formats acceptés : .pdf, .zip</li>
+                    <li>Taille maximale</li>
+                </ul>
+            </li>
+            <li>Bouton "Déposer ma copie"</li>
+            <li>Message de confirmation</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📄</span>
+            <span>Suivi des copies déposées</span>
+        </div>
+        <p>Tableau affichant :</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Identifiant Anonyme</th>
+                    <th>Date de Dépôt</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>4YZH75</td>
+                    <td>2025-06-28</td>
+                    <td><span class="status-corrected">Corrigée</span></td>
+                    <td><span class="action-button action-download">🔽 Télécharger le rapport</span></td>
+                </tr>
+                <tr>
+                    <td>X29BC3</td>
+                    <td>2025-06-27</td>
+                    <td><span class="status-pending">En cours de correction</span></td>
+                    <td>–</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📊</span>
+            <span>Rapport de correction</span>
+        </div>
+        <ul>
+            <li>Téléchargement du rapport PDF :
+                <ul>
+                    <li>Note obtenue</li>
+                    <li>Commentaire du correcteur</li>
+                    <li>Date de correction</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">
+        <span class="emoji">✅</span>
+        <span>Espace Correcteur</span>
+    </div>
+
+    <div class="description">
+        L'espace correcteur est centré sur <strong>la correction et le suivi des copies</strong>.
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📋</span>
+            <span>Liste des copies à corriger</span>
+        </div>
+        <p>Tableau avec :</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Identifiant Anonyme</th>
+                    <th>Date de Dépôt</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>4YZH75</td>
+                    <td>2025-06-28</td>
+                    <td><span class="status-pending">Non corrigée</span></td>
+                    <td><span class="action-button action-view">👁️ Voir</span></td>
+                </tr>
+                <tr>
+                    <td>X29BC3</td>
+                    <td>2025-06-27</td>
+                    <td><span class="status-locked">En cours</span></td>
+                    <td><span class="action-button">🔒 En cours</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul>
+            <li>Bouton « Prendre en charge » : verrouille la copie pour éviter les conflits</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📂</span>
+            <span>Visualisation de la copie</span>
+        </div>
+        <ul>
+            <li>Téléchargement ou affichage intégré du document</li>
+        </ul>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">📝</span>
+            <span>Grille d'évaluation</span>
+        </div>
+        <div class="form-example">
+            <strong>Formulaire :</strong>
+            <ul>
+                <li>Note (ex : champ sur 20)</li>
+                <li>Commentaire</li>
+                <li>Bouton « Soumettre la correction »</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="feature">
+        <div class="feature-title">
+            <span class="emoji">✅</span>
+            <span>Historique des copies corrigées</span>
+        </div>
+        <ul>
+            <li>Liste des corrections effectuées</li>
+            <li>Possibilité de revoir les notes/commentaires déjà envoyés</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

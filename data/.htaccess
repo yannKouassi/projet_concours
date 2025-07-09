@@ -1,0 +1,12 @@
+
+
+#on va mettre en place une sécurité cad réecrire l'URL
+#on va mettre les extensions autorisées
+
+# Activer l’outil de réécriture
+RewriteEngine On        # outil de réécriture
+# si URL ne se termine pas.pdf ou .zip
+
+RewriteCond %{REQUEST_URI} !\.(pdf|zip)$ [NC]
+
+RewriteRule ^.*$ - [F,L]  # Refuse l’accès (403)
