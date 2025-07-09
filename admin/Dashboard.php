@@ -22,6 +22,9 @@ $totalCorrecteurs = $stmt->fetchColumn();
 $stmt->closeCursor();
 $stmt = $pdo->query("SELECT COUNT(*) FROM copies WHERE statut='corrigee'");
 $totalCopiesCorrigees = $stmt->fetchColumn();
+$stmt->closeCursor();
+$stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'candidat'");
+$totalCandidats = $stmt->fetchColumn();
 
 
 ?>
@@ -125,6 +128,14 @@ $totalCopiesCorrigees = $stmt->fetchColumn();
                         <div class="stat-content">
                             <div class="stat-number" id="totalCorrectors"><?= $totalCorrecteurs?></div>
                             <div class="stat-label">Correcteurs Actifs</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card correctors">
+                        <div class="stat-icon">👨‍🏫</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalCorrectors"><?=$totalCandidats ?></div>
+                            <div class="stat-label">Candidat Actifs</div>
                         </div>
                     </div>
 
