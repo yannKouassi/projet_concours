@@ -1,0 +1,17 @@
+# Ignorer le dossier vendor (bibliothèques externes)
+vendor/
+
+# Ignorer les archives ZIP
+*.zip
+
+# Ignorer la configuration contenant les infos sensibles
+/config/db.php
+
+# Ignorer les fichiers temporaires, logs, etc.
+*.log
+*.cache
+*.tmp
+
+# Ignorer les fichiers système (Windows, macOS)
+Thumbs.db
+.DS_Store
