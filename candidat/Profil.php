@@ -7,7 +7,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'candidat') {
 
 
 }
+
 require 'Upload.php';
+
 
 ?>
 
@@ -113,7 +115,7 @@ require 'Upload.php';
 
                     require_once __DIR__ . '/../config/db.php';
 
-                    $stmt = $pdo->prepare(" SELECT fichier, date_depot, statut FROM copies WHERE id_candidat = ? ORDER BY date_depot DESC");
+                    $stmt = $pdo->prepare(" SELECT id, fichier, date_depot, statut FROM copies WHERE id_candidat = ? ORDER BY date_depot DESC");
                     $stmt->execute([$_SESSION['user']['id']]);
                     $copies = $stmt->fetchAll();
 
@@ -124,7 +126,7 @@ require 'Upload.php';
                             <td><?= date('d/m/Y H:i', strtotime($copie['date_depot'])) ?></td>
                             <td><?= ucfirst(str_replace('_', ' ', $copie['statut'])) ?></td>
                             <td>
-                                <a href="#" class="btn-download" onclick="downloadReport('')">
+                                <a href="Resultat.php?id=<?= $_SESSION['user']['id'] ?>" class="btn-download"  >
                                     📥 Télécharger rapport
                                 </a>
                             </td>

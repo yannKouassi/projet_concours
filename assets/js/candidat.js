@@ -12,4 +12,10 @@
 
     const labelParagraph = document.querySelector("label.footer > p");
     labelParagraph.textContent = fileInput.files.length ? "Fichier prêt à être déposé ✅" : "Aucun fichier sélectionné";
+
+
+
+    function redirectToResult() {
+            window.location.href = "../../candidat/Resultat.php";
+        }
 });
