@@ -39,7 +39,7 @@ if(isset($_FILES['fichier']) && $_FILES['fichier']["error"]===0){
     }
     //ici le type est correct
     //on limite la taille
-    if($size > 10000000000000000){
+    if($size > 1000000000000){
         die('Erreur : ficher volumineux');
     }
     //on va généré un nom anonyme(unique) pour le fichier question sécurité
@@ -55,7 +55,7 @@ if(isset($_FILES['fichier']) && $_FILES['fichier']["error"]===0){
     //on déplace le fichier dans le repertoire
     //move_uploaded_file — Déplace un fichier téléchargé   move_uploaded_file(string $from, string $to): bool
     if(!move_uploaded_file($_FILES['fichier']['tmp_name'], $new_filename)){
-        //tp_name corresponds au chemin d'avant
+        //tpm_name corresponds au chemin d'avant
         //si ce n'est pas renommé
         die("Erreur lors de l'envoi du fichier");
     }

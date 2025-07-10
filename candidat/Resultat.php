@@ -13,11 +13,11 @@ function getCandidatData($id) {
 
     $stmt = $pdo->prepare("
     SELECT u.id, u.nom, u.prenom, u.email,
-           g.note AS notes, g.commentaire, g.critere, c.date_depot,c.statut
+           g.note AS notes, g.commentaire, g.critere, c.date_depot,c.statut,c.id AS id_copie
     FROM users u
     JOIN copies c ON u.id = c.id_candidat
     JOIN grille_evaluation g ON g.id_copie = c.id
-    WHERE u.id = ?
+    WHERE c.id = ?
 ");
 
     $stmt->execute([$id]);
@@ -63,7 +63,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         $filename = 'rapport_' . $candidat['nom'] . '_' . $candidat['prenom'] . '.pdf';
         $pdf->Output('D', $filename);
     } else {
-        echo "Candidat non trouve";
+        echo "<h3 style='color:#4b5563;' > La copie n'est pas encore corrigée. Rapport indisponible.</h3>";
+        echo "<p><a href='Profil.php' style='color: blue; text-decoration: underline;'>⬅ Retour au profil</a></p>";
+        exit;
+
     }
 } else {
     echo "ID manquant";

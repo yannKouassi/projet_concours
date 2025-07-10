@@ -126,7 +126,7 @@ require 'Upload.php';
                             <td><?= date('d/m/Y H:i', strtotime($copie['date_depot'])) ?></td>
                             <td><?= ucfirst(str_replace('_', ' ', $copie['statut'])) ?></td>
                             <td>
-                                <a href="Resultat.php?id=<?= $_SESSION['user']['id'] ?>" class="btn-download"  >
+                                <a href="Resultat.php?id=<?= $copie['id'] ?>" class="btn-download"  >
                                     📥 Télécharger rapport
                                 </a>
                             </td>
