@@ -52,8 +52,8 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         $pdf->Cell(0, 10, 'Prenom: ' . $candidat['prenom'], 0, 1);
         $pdf->Cell(0, 10, 'Email: ' . $candidat['email'], 0, 1);
         $pdf->MultiCell(0, 10, 'Notes: ' . $candidat['notes']);
-        $pdf->MultiCell(0, 10, 'Commentaire: ' . $candidat['commentaire'], 0, 1);
-        $pdf->MultiCell(0, 10, 'Critere: ' . $candidat['critere'], 0, 1);
+        $pdf->MultiCell(0, 10, utf8_decode('Commentaire: ' . $candidat['commentaire']), 0, 1);
+        $pdf->MultiCell(0, 10,utf8_decode( 'Critere: ' . $candidat['critere']), 0, 1);
         $pdf->Cell(0, 10, 'Date de depot: ' . $candidat['date_depot'], 0, 1);
         $pdf->Ln(5);
 
