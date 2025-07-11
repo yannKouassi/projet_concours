@@ -3,6 +3,7 @@ vendor/
 
 # Ignorer les archives ZIP
 *.zip
+*.pdf
 
 # Ignorer la configuration contenant les infos sensibles
 /config/db.php
